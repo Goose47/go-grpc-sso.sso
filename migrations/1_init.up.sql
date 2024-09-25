@@ -1,14 +1,14 @@
-create table if not exists users
+CREATE TABLE IF NOT EXISTS users
 (
-    id integer primary key,
-    email text not null unique,
-    pass_hash text not null
+    id           INTEGER PRIMARY KEY,
+    email        TEXT    NOT NULL UNIQUE,
+    pass_hash    BLOB    NOT NULL
 );
-create index if not exists idx_email on users (email)
+CREATE INDEX IF NOT EXISTS idx_email ON users (email);
 
-create table if not exists apps
+CREATE TABLE IF NOT EXISTS apps
 (
-    id integer primary key,
-    name text not null unique,
-    secrete text not null unique
+    id     INTEGER PRIMARY KEY,
+    name   TEXT NOT NULL UNIQUE,
+    secret TEXT NOT NULL UNIQUE
 );
