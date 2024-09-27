@@ -26,7 +26,7 @@ type UserProvider interface {
 }
 
 type AppProvider interface {
-	App(ctx context.Context, appID int) (models.App, error)
+	App(ctx context.Context, appID int64) (models.App, error)
 }
 
 type Auth struct {
@@ -118,7 +118,7 @@ func (a *Auth) Login(
 		return "", fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
 	}
 
-	app, err := a.appProvider.App(ctx, appID)
+	app, err := a.appProvider.App(ctx, int64(appID))
 	if err != nil {
 		if errors.Is(err, storage.ErrAppNotFound) {
 			a.log.Warn("app not found", sl.Err(err))
