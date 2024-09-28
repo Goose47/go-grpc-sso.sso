@@ -59,7 +59,7 @@ func InterceptorLogger(l *slog.Logger) logging.Logger {
 
 // MustRun runs gRPC server and panics if any error occurs
 func (a *App) MustRun() {
-	if err := a.Run; err != nil {
+	if err := a.Run(); err != nil {
 		panic(err)
 	}
 }
