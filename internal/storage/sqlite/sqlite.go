@@ -64,7 +64,7 @@ func (s *Storage) User(ctx context.Context, email string) (models.User, error) {
 		return models.User{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	row := stmt.QueryRowContext(ctx)
+	row := stmt.QueryRowContext(ctx, email)
 
 	var user models.User
 	err = row.Scan(&user.ID, &user.Email, &user.PassHash)
