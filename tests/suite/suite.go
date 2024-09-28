@@ -17,7 +17,7 @@ type Suite struct {
 	AuthClient ssov1.AuthClient
 }
 
-const configPath = "./config/local_tests_config.yaml"
+const configPath = "../config/local_tests_config.yaml"
 
 func New(t *testing.T) (context.Context, *Suite) {
 	t.Helper()
