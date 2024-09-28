@@ -84,7 +84,7 @@ func TestRegisterLogin_DuplicatedRegistration(t *testing.T) {
 	})
 
 	require.Error(t, err)
-	assert.Empty(t, regResp2.UserId)
+	assert.Empty(t, regResp2)
 	assert.ErrorContains(t, err, "user already exists")
 }
 
@@ -109,7 +109,7 @@ func TestRegister_FailCases(t *testing.T) {
 		},
 		{
 			name:        "Register with both empty",
-			email:       gofakeit.Email(),
+			email:       "",
 			pass:        "",
 			expectedErr: "email is required",
 		},
@@ -124,7 +124,7 @@ func TestRegister_FailCases(t *testing.T) {
 			})
 
 			require.Error(t, err)
-			assert.Empty(t, regResp.UserId)
+			assert.Empty(t, regResp)
 			require.Contains(t, err.Error(), tt.expectedErr)
 		})
 	}
@@ -135,7 +135,7 @@ func TestLogin_FailCases(t *testing.T) {
 		name        string
 		email       string
 		pass        string
-		appID       int
+		appID       int32
 		expectedErr string
 	}{
 		{
@@ -175,11 +175,11 @@ func TestLogin_FailCases(t *testing.T) {
 			loginResp, err := st.AuthClient.Login(ctx, &ssov1.LoginRequest{
 				Email:    tt.email,
 				Password: tt.pass,
-				AppId:    appID,
+				AppId:    tt.appID,
 			})
 
 			require.Error(t, err)
-			assert.Empty(t, loginResp.Token)
+			assert.Empty(t, loginResp)
 			assert.ErrorContains(t, err, tt.expectedErr)
 		})
 	}
