@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"os"
 	"time"
@@ -23,24 +24,42 @@ type GRPCConfig struct {
 	Timeout time.Duration `yaml:"timeout"`
 }
 
-func MustLoad() *Config {
-	configPath := fetchConfigPath()
-	if configPath == "" {
-		panic("config path is empty")
-	}
-
+// LoadPath loads configuration from specified path and returns config instance and error
+func LoadPath(configPath string) (*Config, error) {
 	// check if file exists
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		panic("config file does not exist: " + configPath)
+		return nil, fmt.Errorf("config file does not exist: %s", configPath)
 	}
 
 	var cfg Config
 
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
-		panic("config path is empty: " + err.Error())
+		return nil, fmt.Errorf("config file does not exist: %s", err.Error())
 	}
 
-	return &cfg
+	return &cfg, nil
+}
+
+// MustLoad fetches path, loads configuration and panics on any error
+func MustLoad() *Config {
+	configPath := fetchConfigPath()
+
+	cfg, err := LoadPath(configPath)
+	if err != nil {
+		panic(err)
+	}
+
+	return cfg
+}
+
+// MustLoadPath loads configuration form configPath and panics on any error
+func MustLoadPath(configPath string) *Config {
+	cfg, err := LoadPath(configPath)
+	if err != nil {
+		panic(err)
+	}
+
+	return cfg
 }
 
 // fetchConfigPath fetches config path from command line flag or environment variable.
