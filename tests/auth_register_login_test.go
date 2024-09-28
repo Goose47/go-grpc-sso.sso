@@ -53,7 +53,7 @@ func TestRegisterLogin_LoginHappyPath(t *testing.T) {
 
 	assert.Equal(t, regResp.UserId, int64(claims["uid"].(float64)))
 	assert.Equal(t, email, claims["email"].(string))
-	assert.Equal(t, appID, claims["app_id"].(int))
+	assert.Equal(t, appID, int(claims["app_id"].(float64)))
 
 	const deltaSeconds = 1
 
