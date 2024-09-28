@@ -51,7 +51,7 @@ func TestRegisterLogin_LoginHappyPath(t *testing.T) {
 	claims, ok := tokenParsed.Claims.(jwt.MapClaims)
 	require.True(t, ok)
 
-	assert.Equal(t, regResp.UserId, claims["uid"].(int64))
+	assert.Equal(t, regResp.UserId, int64(claims["uid"].(float64)))
 	assert.Equal(t, email, claims["email"].(string))
 	assert.Equal(t, appID, claims["app_id"].(int))
 
