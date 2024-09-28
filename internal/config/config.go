@@ -19,6 +19,7 @@ type Config struct {
 
 type GRPCConfig struct {
 	Port    int           `yaml:"port"`
+	Host    string        `yaml:"host"`
 	Timeout time.Duration `yaml:"timeout"`
 }
 
