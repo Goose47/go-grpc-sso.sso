@@ -122,7 +122,7 @@ func (a *Auth) Login(
 	if err != nil {
 		if errors.Is(err, storage.ErrAppNotFound) {
 			a.log.Warn("app not found", sl.Err(err))
-			return "", fmt.Errorf("%s: %w", op, err)
+			return "", fmt.Errorf("%s: %w", op, storage.ErrAppNotFound)
 		}
 
 		a.log.Error("failed to get app", sl.Err(err))

@@ -55,6 +55,9 @@ func (s *serverAPI) Login(
 		if errors.Is(err, auth.ErrInvalidCredentials) {
 			return nil, status.Errorf(codes.InvalidArgument, "invalid credentials")
 		}
+		if errors.Is(err, storage.ErrAppNotFound) {
+			return nil, status.Errorf(codes.InvalidArgument, "app not found")
+		}
 
 		return nil, status.Error(codes.Internal, "failed to login")
 	}
