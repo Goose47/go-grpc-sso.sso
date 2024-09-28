@@ -25,5 +25,6 @@ tasks:
     deps:
       - migrate:main
       - migrate:test
+      - run:test
     cmds:
       - go test ./tests -count=1 -v
