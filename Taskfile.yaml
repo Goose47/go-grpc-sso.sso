@@ -23,6 +23,7 @@ tasks:
   test:
     desc: "Run migrations, and then run tests"
     deps:
+      - migrate:main
       - migrate:test
     cmds:
       - go test ./tests -count=1 -v
