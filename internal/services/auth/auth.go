@@ -23,6 +23,7 @@ type UserSaver interface {
 
 type UserProvider interface {
 	User(ctx context.Context, email string) (models.User, error)
+	IsAdmin(ctx context.Context, userID int64) (bool, error)
 }
 
 type AppProvider interface {
@@ -138,4 +139,31 @@ func (a *Auth) Login(
 	}
 
 	return token, nil
+}
+
+// IsAdmin checks whether user is admin
+func (a *Auth) IsAdmin(
+	ctx context.Context,
+	userID int64,
+) (bool, error) {
+	op := "Auth.IsAdmin"
+
+	log := a.log.With(slog.String("op", op), slog.Int("user_id", int(userID)))
+
+	log.Info("checking whether user is admin")
+
+	isAdmin, err := a.usrProvider.IsAdmin(ctx, userID)
+	if err != nil {
+		if errors.Is(err, storage.ErrUserNotFound) {
+			log.Warn("usr not found", sl.Err(err))
+			return false, fmt.Errorf("%s: %w", op, err)
+		}
+
+		log.Error("failed to check whether user is admin", sl.Err(err))
+		return false, fmt.Errorf("%s: %w", op, err)
+	}
+
+	log.Info("checked if user is admin", slog.Bool("is_admin", isAdmin))
+
+	return isAdmin, nil
 }
