@@ -18,6 +18,8 @@ jobs:
         run: |
           go mod download
           go build -o grpc-auth ./cmd/sso
+      - name: Install Task
+        uses: arduino/setup-task@v2
       - name: Migrate database
         run: |
           task migrate:local
