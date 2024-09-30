@@ -1,0 +1,30 @@
+name: Test App
+
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  test:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.22.4
+      - name: Build app
+        run: |
+          go mod download
+          go build -o grpc-auth ./cmd/sso
+      - name: Migrate database
+        run: |
+          task migrate:local
+          task migrate:test
+      - name: Run app in test env in background
+        run: |
+          task run:test &
+      - name: Run tests
+        run:
+          go test ./tests
